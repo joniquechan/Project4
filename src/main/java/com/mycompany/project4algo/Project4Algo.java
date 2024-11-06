@@ -3,14 +3,48 @@
  */
 
 package com.mycompany.project4algo;
+import java.util.Scanner;
+import java.util.*;
 
 /**
  *
  * @author User
  */
 public class Project4Algo {
-
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Scanner sc = new Scanner(System.in);
+
+        // key - color, value - vehicle
+        HashMap<String, Vehicle> vehicles = new HashMap<>();
+
+        int numVehicles = sc.nextInt();
+        sc.nextLine();
+        for (int i = 0; i < numVehicles; i++) {
+            String type = sc.nextLine();
+            String color = sc.nextLine();
+            String orientation = sc.nextLine();
+            int xPos = sc.nextInt();
+            int yPos = sc.nextInt();
+            sc.nextLine();
+            int length = 2;
+            if (type != "car") {
+                length = 3;
+            }
+            Vehicle v = new Vehicle(type, orientation, color, xPos, yPos, length);
+            vehicles.put(color, v);
+        }
+
+        // FIX - should this go in the loop or outside?
+        State initial = new State(vehicles);
+
+        // solve + print result
+
+        // TODO:
+        // parse input 
+        // make BFS
+        // find adjacency
+        // hashmap of position - parent position
+        // generate new board state, check if its in hashmap
+        // yes = skip, no = add to queue, mark visited
     }
 }
