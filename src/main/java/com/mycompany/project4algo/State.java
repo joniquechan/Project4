@@ -20,9 +20,9 @@ public class State {
     }
 
     // FIX
-    public State move(Vehicle v, int dir) {
-        // move vehicle        
-    }
+    /*public State move(Vehicle v, int dir) {
+        // move vehicle   
+    }*/
 
     // FIX
     public boolean isValid(Vehicle v, int r, int c, State s) {
@@ -31,7 +31,7 @@ public class State {
     }
 
     public boolean goalState() {
-        Vehicle redCar = vehicles.get("red");
+        Vehicle redCar = vehicles.get("0");
         return redCar.col == 5 && redCar.row == 3;
     }
 }

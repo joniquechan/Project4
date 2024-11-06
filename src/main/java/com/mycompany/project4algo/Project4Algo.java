@@ -13,10 +13,13 @@ import java.util.*;
 public class Project4Algo {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        System.err.println("input: ");
 
         // key - color, value - vehicle
         HashMap<String, Vehicle> vehicles = new HashMap<>();
-
+        String board = "------------------------------------";
+        HashMap<String, String> colors = new HashMap<>();
+        
         int numVehicles = sc.nextInt();
         sc.nextLine();
         for (int i = 0; i < numVehicles; i++) {
@@ -30,9 +33,46 @@ public class Project4Algo {
             if (type != "car") {
                 length = 3;
             }
-            Vehicle v = new Vehicle(type, orientation, color, xPos, yPos, length);
-            vehicles.put(color, v);
+            String key = Integer.toString(i);
+            Vehicle v = new Vehicle(type, orientation, color, xPos, yPos, length, key);
+            vehicles.put(key, v);
+            xPos--;
+            yPos--;
+            if(orientation.equals("h") && length == 2){
+                int start = xPos + 6*yPos;
+                int end = start + 1;
+                String temp;
+                if(end != 35)
+                    temp = board.substring(0, start) + key + key + board.substring(end + 1);
+                else
+                    temp = board.substring(0, start) + key + key;
+                board = temp;
+            }
+            if(orientation.equals("h") && length == 3){
+                int start = xPos + 6*yPos;
+                int end = start + 2;
+                String temp;
+                if(end != 35)
+                    temp = board.substring(0, start) + key + key + key + board.substring(end + 1);
+                else
+                    temp = board.substring(0, start) + key + key + key;
+                board = temp;
+            }
+            if(orientation.equals("v")){
+                for(int j = 0; j < length; j++){
+                    int start = xPos + 6*yPos;
+                    String temp;
+                        if(start != 35)
+                    temp = board.substring(0, start) + key;
+                        else
+                    temp = board.substring(0, start) + key + board.substring(start + 1);
+                    board = temp;
+                    yPos++;
+                }
+            }
         }
+        System.out.println(board);
+
 
         // create
 

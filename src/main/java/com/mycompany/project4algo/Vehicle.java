@@ -5,14 +5,16 @@ public class Vehicle {
     public String orientation;
     public String color;
     int row, col, length;
+    String key;
 
-    public Vehicle(String t, String o, String c, int r, int co, int l) {
+    public Vehicle(String t, String o, String c, int r, int co, int l, String k) {
         type = t;
         orientation = o;
         color = c;
         row = r;
         col = co;
         length = l;
+        key = k;
     }
 
     public String getType() {
@@ -25,5 +27,9 @@ public class Vehicle {
 
     public String getColor() {
         return color;
+    }
+
+    public String getKey() {
+        return key;
     }
 }
