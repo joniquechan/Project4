@@ -3,18 +3,20 @@ import java.util.*;
 
 public class State {
     public int numStates;
-    public int boardSize = 6;
     List<String> moves;
-    public Map<String, Vehicle> vehicles;
+    public HashMap<String, Vehicle> vehicles;
 
-    // FIX
-    public State(Map<String, Vehicle> v) {
+    // initialize string (36 chars)
+    // store each state as a new board string
+
+    // store map of vehicles + position
+    public State(HashMap<String, Vehicle> v) {
         vehicles = v;
     }
 
     // FIX
     public void initializeBoard(Vehicle v) {
-
+        
     }
 
     // FIX

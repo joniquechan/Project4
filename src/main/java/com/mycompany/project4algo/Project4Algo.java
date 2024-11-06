@@ -34,8 +34,7 @@ public class Project4Algo {
             vehicles.put(color, v);
         }
 
-        // FIX - should this go in the loop or outside?
-        State initial = new State(vehicles);
+        // create
 
         // solve + print result
 
