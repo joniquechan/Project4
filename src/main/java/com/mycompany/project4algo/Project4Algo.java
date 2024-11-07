@@ -26,33 +26,34 @@ public class Project4Algo {
             String type = sc.nextLine();
             String color = sc.nextLine();
             String orientation = sc.nextLine();
-            int xPos = sc.nextInt();
-            int yPos = sc.nextInt();
+            int row = sc.nextInt();
+            int col = sc.nextInt();
             sc.nextLine();
             int length = 2;
-            if (type != "car") {
+            if (!type.equals("car")) {
                 length = 3;
             }
             String key = Integer.toString(i);
-            Vehicle v = new Vehicle(type, orientation, color, xPos, yPos, length, key);
+            Vehicle v = new Vehicle(type, orientation, color, row, col, length, key);
             vehicles.put(key, v);
-            xPos--;
-            yPos--;
+
+            row--;
+            col--;
             if(orientation.equals("h") && length == 2){
-                int start = xPos + 6*yPos;
+                int start = col + 6*row;
                 int end = start + 1;
                 String temp;
-                if(end != 35)
+                if(end <= 35)
                     temp = board.substring(0, start) + key + key + board.substring(end + 1);
                 else
                     temp = board.substring(0, start) + key + key;
                 board = temp;
             }
             if(orientation.equals("h") && length == 3){
-                int start = xPos + 6*yPos;
+                int start = col + 6*row;
                 int end = start + 2;
                 String temp;
-                if(end != 35)
+                if(end <= 35)
                     temp = board.substring(0, start) + key + key + key + board.substring(end + 1);
                 else
                     temp = board.substring(0, start) + key + key + key;
@@ -60,14 +61,14 @@ public class Project4Algo {
             }
             if(orientation.equals("v")){
                 for(int j = 0; j < length; j++){
-                    int start = xPos + 6*yPos;
+                    int start = col + 6*row;
                     String temp;
-                        if(start != 35)
-                    temp = board.substring(0, start) + key;
+                        if(start <= 35)
+                            temp = board.substring(0, start) + key + board.substring(start + 1);
                         else
-                    temp = board.substring(0, start) + key + board.substring(start + 1);
+                    temp = board.substring(0, start) + key;
                     board = temp;
-                    yPos++;
+                    row++;
                 }
             }
         }
