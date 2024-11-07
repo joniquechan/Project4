@@ -3,7 +3,6 @@
  */
 
 package com.mycompany.project4algo;
-import java.util.Scanner;
 import java.util.*;
 
 /**
@@ -18,7 +17,7 @@ public class Project4Algo {
         // key - color, value - vehicle
         HashMap<String, Vehicle> vehicles = new HashMap<>();
         String board = "------------------------------------";
-        HashMap<String, String> colors = new HashMap<>();
+        // HashMap<String, String> colors = new HashMap<>();
         
         int numVehicles = sc.nextInt();
         sc.nextLine();
@@ -26,8 +25,8 @@ public class Project4Algo {
             String type = sc.nextLine();
             String color = sc.nextLine();
             String orientation = sc.nextLine();
-            int row = sc.nextInt();
-            int col = sc.nextInt();
+            int row = sc.nextInt() - 1;
+            int col = sc.nextInt() - 1;
             sc.nextLine();
             int length = 2;
             if (!type.equals("car")) {
@@ -37,8 +36,8 @@ public class Project4Algo {
             Vehicle v = new Vehicle(type, orientation, color, row, col, length, key);
             vehicles.put(key, v);
 
-            row--;
-            col--;
+            // row--;
+            // col--;
             int start = col + 6*row;
             String temp;
             if(orientation.equals("h") && length == 2){
@@ -71,21 +70,8 @@ public class Project4Algo {
         }
         
         State s = new State(board);
-        Solve.bfs(s, vehicles);
-
-
-
-
-        // create
-
-        // solve + print result
-
-        // TODO:
-        // parse input 
-        // make BFS
-        // find adjacency
-        // hashmap of position - parent position
-        // generate new board state, check if its in hashmap
-        // yes = skip, no = add to queue, mark visited
+        int result = Solve.bfs(s, vehicles);
+        System.out.println(result + " moves");
+        sc.close();
     }
 }

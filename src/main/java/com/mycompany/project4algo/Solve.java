@@ -1,184 +1,145 @@
 package com.mycompany.project4algo;
 import java.util.*;
 
-public class Solve {
-    // HashMap<State, State> 
+// second draft
+public class Solve { 
+
+    // changed to hashset bc it just checks existence of state
+    public static HashSet<String> visited = new HashSet<>();
     public static int bfs(State initialState, HashMap<String, Vehicle> vehicles) {
         Queue<State> queue = new LinkedList<>();
-        HashMap<String, String> visted = new HashMap<>();
+        
         queue.add(initialState);
+        visited.add(initialState.getBoard());
 
         while (!queue.isEmpty()) {
             State currentState = queue.poll();
             String board = currentState.getBoard();
+
             if (done(board)) {
+                // for tracking - needs fixing
+                currentState.getMovesList().forEach(System.out::println);
                 return currentState.getMoves();
             }
-            for(Vehicle v : vehicles.values()){
-                String orientation = v.getOrientation();
-                int row = v.getRow();
-                int col = v.getCol();
-                int length = v.getLength();
-                String key = v.getKey();
-                String newBoard;
-                int start = col + 6*row;
-                int end = start + length - 1;
-                int y = row;
-                int moves = currentState.getMoves() + 1;
 
-                //remove car from board
-                newBoard = board.substring(0);
-                if(orientation.equals("h") && length == 2){
-                    if(end <= 35)
-                        newBoard = board.substring(0, start) + "--" + board.substring(end + 1);
-                    else
-                        newBoard = board.substring(0, start) + "--";
-                }
-                else if(orientation.equals("h") && length == 3){
-                    if(end <= 35)
-                        newBoard = board.substring(0, start) + "---" + board.substring(end + 1);
-                    else
-                        newBoard = board.substring(0, start) + "---";
-                }
-                else if(orientation.equals("v")){
-                    for(int a = 0; a < length; a++){
-                        start = col + 6*y;
-                        if(start <= 35)
-                            newBoard = newBoard.substring(0, start) + "-" + board.substring(start + 1);
-                        else
-                            newBoard = newBoard.substring(0, start) + "-";
-                        y++;
-                    }
-                }
+            for (Vehicle v : vehicles.values()) {
+                for (String newBoard : getPossibleMoves(board, v)) {
+                    if (!visited.contains(newBoard)) {
+                        visited.add(newBoard);
 
-                //if vehicle is horizontal
-                if(orientation.equals("h")){
-                    int j = col - 1;
-                    //check spots to the left
-                    while(j >= 0){
-                        int index = j + 6*row;
-                        //check for another vehicle
-                        if(!board.substring(index, index).equals("-")){
-                            break;
-                        }
-                        String result = addhVehicle(newBoard,index, length, key);
-                        if(!duplicate(result, initialState, visted)){
-                            visted.put(result, board);
-                            queue.add(new State(result, moves));
-                        }
-                        j--;
-                    }
-
-                    //check spots to the right
-                    j = col + length;
-                    while(j <= 5){
-                        int index = j + 6*row;
-                        //check for another vehicle
-                        if(!board.substring(index, index).equals("-")){
-                            break;
-                        }
-                        String result = addhVehicle(newBoard, index - length + 1, length, key);
-                        if(!duplicate(result, initialState, visted)){
-                            visted.put(result, board);
-                            queue.add(new State(result, moves));
-                        }
-                        j++;
+                        queue.add(new State(newBoard, currentState.getMoves() + 1));
                     }
                 }
-                //if vehicle if vertical
-                else{
-                    int i = row - 1;
-                    //check spots to the top
-                    while(i >= 0){
-                        int index = col + 6*i;
-                        //check for another vehicle
-                        if(!board.substring(index, index).equals("-")){
-                            break;
-                        }
-                        String result = addvVehicle(newBoard, index, length, key);
-                        if(!duplicate(result, initialState, visted)){
-                            visted.put(result, board);
-                            queue.add(new State(result, moves));
-                        }
-                        i--;
-                    }
-                    //check spots to the bottom
-                    i = row + length;
-                    while(i <= 5){
-                        int index = col + 6*i;
-                        //check for another vehicle
-                        if(!board.substring(index, index).equals("-")){
-                            break;
-                        }
-                        String result = addhVehicle(newBoard, index - 6*(length - 1), length, key);
-                        //check if duplicate has already been created
-                        if(!duplicate(result, initialState, visted)){
-                            visted.put(result, board);
-                            queue.add(new State(result, moves));
-                        }
-                        i++;
-                    }
-
-                }
-                
             }
         }
-
-        // enqueue initial state
-        // dequeue
-        // check if red car at goal
-        // if not: try all possible moves for each vehicle and add new states to queue
-        // if yes: break and return moves
-        return 0;
+        // no solution found
+        return -1;
     }
 
+    // wheres the end?? <- FIXED jk not really
     private static boolean done(String board) {
-        if(board.substring(10,12).equals("00")){
+        StringBuilder goalBoard = new StringBuilder(board);
+        if (goalBoard.charAt(17) == '0') {
+            System.out.println(goalBoard.toString());
             return true;
         }
         return false;
     }
 
-    private static String addhVehicle(String board, int index, int length, String key){
-        String temp = board.substring(0);
-        int end;
-        if(length == 2){
-            end = index + 1;
-            if(end <= 35)
-                temp = temp.substring(0, index) + key + key + temp.substring(end + 1);
-            else
-                temp = temp.substring(0, index) + key + key;
-        }
-        else{
-            end = index + 2;
-            if(end <= 35)
-                temp = temp.substring(0, index) + key + key + key + temp.substring(end + 1);
-            else
-                temp = temp.substring(0, index) + key + key + key;
+    private static List<String> getPossibleMoves(String board, Vehicle vehicle) {
+        List<String> moves = new ArrayList<>();
+        int row = vehicle.getRow();
+        int col = vehicle.getCol();
+        String orientation = vehicle.getOrientation();
+        int length = vehicle.getLength();
+        String key = vehicle.getKey();
+
+        // remove car
+        String clearedBoard = removeCar(board, vehicle);
+
+        // add car - i think something is wrong here TT
+        // if vehicle is horizontal
+        if (orientation.equals("h")) {
+            // move left
+            int left = col - 1;
+            // check bounds + if theres a vehicle
+            while (left >= 0 && clearedBoard.charAt(row * 6 + left) == '-') {
+                int index = left + 6 * row;
+                moves.add(addVehicle(clearedBoard, index, length, key, true));
+                left--;
+            }
+            // move right
+            int right = col + length;
+            while (right < 6 && clearedBoard.charAt(row * 6 + right) == '-') {
+                int index = right + 6 * row;
+                moves.add(addVehicle(clearedBoard, index - length + 1, length, key, true));
+                right++;
+            }
+        } 
+        // if vehicle is vertical
+        else {
+            // move up
+            int up = row - 1;
+            while (up >= 0 && clearedBoard.charAt(up * 6 + col) == '-') {
+                int index = col + 6 * up;
+                moves.add(addVehicle(clearedBoard, index, length, key, false));
+                up--;
+            }
+            // move down
+            int down = row + length;
+            while (down < 6 && clearedBoard.charAt(down * 6 + col) == '-') {
+                int index = col + 6 * down;
+                moves.add(addVehicle(clearedBoard, index - 6 * (length - 1), length, key, false));
+                down++;
+            }
         }
 
-        return temp;
+        return moves;
     }
 
-    private static String addvVehicle(String board, int index, int length, String key){
-        String temp = board.substring(0);
-        for(int j = 0; j < length; j++){
-            if(index <= 35)
-                temp = temp.substring(0, index) + key + temp.substring(index + 1);
-            else
-                temp = temp.substring(0, index) + key;
-            index += 6;
+    private static String removeCar(String board, Vehicle v) {
+        /* StringBuilder newBoard = new StringBuilder(board);
+        String orientation = v.getOrientation();
+        int length = v.getLength();
+        int start = v.col + 6 * v.row;
+        // int end = start + length - 1;
+
+        if (orientation.equals("h")) {
+            for (int i = 0; i < length; i++) {
+                newBoard.setCharAt(start + i, '-'); 
+        } else if (orientation.equals("v")) {
+            for (int i = 0; i < length; i++) {
+                newBoard.setCharAt(start + i * 6, '-'); 
+            }
+        }
+            */
+        // remove based on key
+        StringBuilder newBoard = new StringBuilder(board);
+        String key = v.getKey();
+
+        for (int i = 0; i < newBoard.length(); i++) {
+            if (newBoard.charAt(i) == key.charAt(0)) {
+                newBoard.setCharAt(i, '-');
+            }
         }
 
-        return temp;
+        return newBoard.toString();
     }
 
-    private static boolean duplicate(String board, State initialState, HashMap<String, String> visted){
-        String dup = visted.get(board);
-
-        if(dup == null && !board.equals(initialState.getBoard())){
-            return false;
+    private static String addVehicle(String board, int startIdx, int length, String key, boolean isHorizontal) {
+        StringBuilder newBoard = new StringBuilder(board);
+        
+        for (int i = 0; i < length; i++) {
+            int end;
+            if (isHorizontal) {
+                end = startIdx + i;
+            }
+            else {
+                end = startIdx + i * 6;
+            }
+            newBoard.setCharAt(end, key.charAt(0));
         }
-        return true;
+        return newBoard.toString();
     }
+    
 }

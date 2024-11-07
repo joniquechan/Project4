@@ -1,51 +1,43 @@
 package com.mycompany.project4algo;
+
 import java.util.*;
 
 public class State {
-    public int numStates;
     public String boardState;
     public int numMoves;
+    // for print: needs implementation
+    public List<String> movesList;
 
     public State(String board) {
         boardState = board;
         numMoves = 0;
+        movesList = new ArrayList<>();
     }
 
     public State(String board, int moves){
         boardState = board;
         numMoves = moves;
+        this.movesList = new ArrayList<>();
     }
 
-    
-    public State move(Vehicle v, int dir) {
-        // move vehicle  
-        State newState = new State(this.boardState);
-        int newRow = v.row; 
-        int newCol = v.col;
-
-        if (v.orientation == "h") {
-            newRow += v.row;
-        }
-        if (v.orientation == "v") {
-            newCol += v.col;
-        }
-
-        return newState;
+    /*
+    public State(String board, int moves, List<String> previousMoves){
+        boardState = board;
+        numMoves = moves;
+        movesList = new ArrayList<>(previousMoves);
     }
-
-    // FIX
-    public boolean isValid(Vehicle v, int r, int c, State s) {
-         
-
-        return true;
-    }
+        */
 
     public int getMoves() {
         return numMoves;
     }
 
-    public int setMoves() {
-        return numMoves;
+    public void addMove(String move) {
+        movesList.add(move);
+    }
+
+    public List<String> getMovesList() {
+        return movesList;
     }
 
     public String getBoard(){
