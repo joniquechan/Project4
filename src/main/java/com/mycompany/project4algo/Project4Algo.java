@@ -72,7 +72,11 @@ public class Project4Algo {
                 }
             }
         }
-        System.out.println(board);
+        
+        State s = new State(board);
+        Solve.bfs(s, vehicles);
+
+
 
 
         // create

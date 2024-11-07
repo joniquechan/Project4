@@ -3,35 +3,36 @@ import java.util.*;
 
 public class State {
     public int numStates;
-    List<String> moves;
-    public HashMap<String, Vehicle> vehicles;
+    public String boardState;
+    public int numMoves;
 
-    // initialize string (36 chars)
-    // store each state as a new board string
-
-    // store map of vehicles + position
-    public State(HashMap<String, Vehicle> v) {
-        vehicles = v;
+    public State(String board) {
+        boardState = board;
     }
 
-    // FIX
-    public void initializeBoard(Vehicle v) {
-        
-    }
+    
+    public State move(Vehicle v, int dir) {
+        // move vehicle  
+        String newState = new String(this.boardState);
+        int newRow = v.row; 
+        int newCol = v.col;
 
-    // FIX
-    /*public State move(Vehicle v, int dir) {
-        // move vehicle   
-    }*/
+        if (v.orientation == "h") {
+            newRow += v.row;
+        }
+        if (v.orientation == "v") {
+            newCol += v.col;
+        }
+    }
 
     // FIX
     public boolean isValid(Vehicle v, int r, int c, State s) {
-        // check if move is valid 
+         
+
         return true;
     }
 
-    public boolean goalState() {
-        Vehicle redCar = vehicles.get("0");
-        return redCar.col == 5 && redCar.row == 3;
+    public int getMoves() {
+        return numMoves;
     }
 }
