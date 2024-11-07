@@ -1,6 +1,8 @@
 package com.mycompany.project4algo;
 import java.util.*;
 
+import javax.swing.plaf.nimbus.State;
+
 public class State {
     public int numStates;
     public String boardState;
@@ -13,7 +15,7 @@ public class State {
     
     public State move(Vehicle v, int dir) {
         // move vehicle  
-        String newState = new String(this.boardState);
+        State newState = new State(this.boardState);
         int newRow = v.row; 
         int newCol = v.col;
 
@@ -23,6 +25,8 @@ public class State {
         if (v.orientation == "v") {
             newCol += v.col;
         }
+
+        return newState;
     }
 
     // FIX

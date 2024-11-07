@@ -11,7 +11,9 @@ public class Solve {
             if (goalState() == true) {
                 return currentState.getMoves();
             }
-            // if ()
+            if (goalState() == true) {
+                break;
+            }
         }
 
         // enqueue initial state
