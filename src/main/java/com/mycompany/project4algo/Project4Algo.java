@@ -39,33 +39,30 @@ public class Project4Algo {
 
             row--;
             col--;
+            int start = col + 6*row;
+            String temp;
             if(orientation.equals("h") && length == 2){
-                int start = col + 6*row;
                 int end = start + 1;
-                String temp;
                 if(end <= 35)
                     temp = board.substring(0, start) + key + key + board.substring(end + 1);
                 else
                     temp = board.substring(0, start) + key + key;
                 board = temp;
             }
-            if(orientation.equals("h") && length == 3){
-                int start = col + 6*row;
+            else if(orientation.equals("h") && length == 3){
                 int end = start + 2;
-                String temp;
                 if(end <= 35)
                     temp = board.substring(0, start) + key + key + key + board.substring(end + 1);
                 else
                     temp = board.substring(0, start) + key + key + key;
                 board = temp;
             }
-            if(orientation.equals("v")){
+            else if(orientation.equals("v")){
                 for(int j = 0; j < length; j++){
-                    int start = col + 6*row;
-                    String temp;
-                        if(start <= 35)
-                            temp = board.substring(0, start) + key + board.substring(start + 1);
-                        else
+                    start = col + 6*row;
+                    if(start <= 35)
+                        temp = board.substring(0, start) + key + board.substring(start + 1);
+                    else
                     temp = board.substring(0, start) + key;
                     board = temp;
                     row++;

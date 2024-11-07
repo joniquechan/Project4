@@ -25,6 +25,18 @@ public class Vehicle {
         return orientation;
     }
 
+    public int getRow(){
+        return row;
+    }
+
+    public int getCol(){
+        return col;
+    }
+
+    public int getLength(){
+        return length;
+    }
+
     public String getColor() {
         return color;
     }

@@ -1,8 +1,6 @@
 package com.mycompany.project4algo;
 import java.util.*;
 
-import javax.swing.plaf.nimbus.State;
-
 public class State {
     public int numStates;
     public String boardState;
@@ -10,6 +8,12 @@ public class State {
 
     public State(String board) {
         boardState = board;
+        numMoves = 0;
+    }
+
+    public State(String board, int moves){
+        boardState = board;
+        numMoves = moves;
     }
 
     
@@ -38,5 +42,13 @@ public class State {
 
     public int getMoves() {
         return numMoves;
+    }
+
+    public int setMoves() {
+        return numMoves;
+    }
+
+    public String getBoard(){
+        return boardState;
     }
 }
