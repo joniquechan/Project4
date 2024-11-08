@@ -6,18 +6,27 @@ package com.mycompany.project4algo;
 import java.util.*;
 
 /**
+ * This class is the main file.
  *
- * @author User
+ * @author Roni Ebenezer, Jonique Chan
+ * @version 1.0
+ * File: Project4Algo.java
+ * Created: Nov 2024
+ * ©Copyright Cedarville University, its Computer Science faculty, 
+ * and the authors. All rights reserved.
+ *
+ * Description: This class is the main file that reads the input in, creates the initial board state,
+ * stores the information of each vehicle and outputs the result.
  */
+
 public class Project4Algo {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.err.println("input: ");
+        System.out.println("input: ");
 
         // key - color, value - vehicle
         HashMap<String, Vehicle> vehicles = new HashMap<>();
         String board = "------------------------------------";
-        // HashMap<String, String> colors = new HashMap<>();
         
         int numVehicles = sc.nextInt();
         sc.nextLine();
@@ -29,16 +38,16 @@ public class Project4Algo {
             int col = sc.nextInt() - 1;
             sc.nextLine();
             int length = 2;
+
             if (!type.equals("car")) {
                 length = 3;
             }
+
             char k = (char)(i + 97);
             String key = "" + k;
             Vehicle v = new Vehicle(type, orientation, color, row, col, length, key);
             vehicles.put(key, v);
 
-            // row--;
-            // col--;
             int start = col + 6*row;
             String temp;
             if(orientation.equals("h") && length == 2){
@@ -69,8 +78,12 @@ public class Project4Algo {
                 }
             }
         }
+        
+        // initialize initial state
         State s = new State(board);
         int result = Solve.bfs(s, vehicles);
+
+        // print results
         if(result == 1){
             System.out.println("1 move");
         }
