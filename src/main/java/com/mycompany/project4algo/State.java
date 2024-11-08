@@ -7,7 +7,7 @@ public class State {
     public int numMoves;
     // for print: needs implementation
     public List<String> movesList;
-
+    
     public State(String board) {
         boardState = board;
         numMoves = 0;

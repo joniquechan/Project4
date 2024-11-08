@@ -32,7 +32,8 @@ public class Project4Algo {
             if (!type.equals("car")) {
                 length = 3;
             }
-            String key = Integer.toString(i);
+            char k = (char)(i + 97);
+            String key = "" + k;
             Vehicle v = new Vehicle(type, orientation, color, row, col, length, key);
             vehicles.put(key, v);
 
@@ -68,10 +69,14 @@ public class Project4Algo {
                 }
             }
         }
-        
         State s = new State(board);
         int result = Solve.bfs(s, vehicles);
-        System.out.println(result + " moves");
+        if(result == 1){
+            System.out.println("1 move");
+        }
+        else{
+            System.out.println(result + " moves");
+        }
         sc.close();
     }
 }
